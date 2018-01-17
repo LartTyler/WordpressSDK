@@ -1,0 +1,39 @@
+DaybreakStudios\WordpressSDK\Entity\Post:
+    id:
+        id: ~
+    fields:
+        publishDate:
+            type: datetime
+            fieldName: date_gmt
+        guid:
+            type: rendered
+        link:
+            readOnly: true
+        modifiedDate:
+            type: datetime
+            readOnly: true
+            fieldName: modified_gmt
+        slug: ~
+        status: ~
+        type: ~
+        password:
+            nullable: true
+        title:
+            type: rendered
+        content:
+            type: rendered
+        excerpt:
+            type: rendered
+            nullable: true
+        commentStatus: ~
+        pingStatus: ~
+        format: ~
+        sticky: ~
+        template: ~
+    oneToOne:
+        featuredMedia: ~
+    manyToOne:
+        author: ~
+    manyToMany:
+        categories: ~
+        tags: ~

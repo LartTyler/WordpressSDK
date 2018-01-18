@@ -1,8 +1,6 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Entity\Features;
 
-	use DaybreakStudios\WordpressSDK\Entity\EntityTrait;
-
 	/**
 	 * For use with {@see FormatCapableInterface}.
 	 *
@@ -10,8 +8,6 @@
 	 * @see     FormatCapableInterface
 	 */
 	trait FormatCapableTrait {
-		use EntityTrait;
-
 		/**
 		 * {@inheritdoc}
 		 */

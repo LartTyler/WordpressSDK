@@ -1,8 +1,6 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Entity\Features;
 
-	use DaybreakStudios\WordpressSDK\Entity\EntityTrait;
-
 	/**
 	 * For use with {@see GUIDCapableInterface}.
 	 *
@@ -10,8 +8,6 @@
 	 * @see     GUIDCapableInterface
 	 */
 	trait GUIDCapableTrait {
-		use EntityTrait;
-
 		/**
 		 * {@inheritdoc}
 		 */

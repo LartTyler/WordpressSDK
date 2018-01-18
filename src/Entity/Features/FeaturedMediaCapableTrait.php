@@ -1,8 +1,6 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Entity\Features;
 
-	use DaybreakStudios\WordpressSDK\Entity\EntityTrait;
-
 	/**
 	 * For use with {@see FeaturedMediaCapableInterface}.
 	 *
@@ -10,8 +8,6 @@
 	 * @see     FeaturedMediaCapableInterface
 	 */
 	trait FeaturedMediaCapableTrait {
-		use EntityTrait;
-
 		/**
 		 * {@inheritdoc}
 		 */

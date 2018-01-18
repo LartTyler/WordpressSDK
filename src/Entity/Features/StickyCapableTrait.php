@@ -1,8 +1,6 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Entity\Features;
 
-	use DaybreakStudios\WordpressSDK\Entity\EntityTrait;
-
 	/**
 	 * For use with {@see StickyCapableInterface}.
 	 *
@@ -10,8 +8,6 @@
 	 * @see     StickyCapableInterface
 	 */
 	trait StickyCapableTrait {
-		use EntityTrait;
-
 		/**
 		 * {@inheritdoc}
 		 */

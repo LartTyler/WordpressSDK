@@ -24,4 +24,13 @@
 		use TemplateCapableTrait;
 		use CategoryCapableTrait;
 		use TagCapableTrait;
+
+		/**
+		 * Post constructor.
+		 *
+		 * @param array $fields
+		 */
+		public function __construct(array $fields = []) {
+			parent::__construct($fields);
+		}
 	}

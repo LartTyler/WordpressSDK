@@ -13,8 +13,17 @@
 		 *
 		 * @return string
 		 */
-		public static function camelize($string) {
+		public static function classify($string) {
 			return str_replace(' ', '', ucwords(strtr($string, '-_', '  ')));
+		}
+
+		/**
+		 * @param string $string
+		 *
+		 * @return string
+		 */
+		public static function camelize($string) {
+			return lcfirst(self::classify($string));
 		}
 
 		/**
@@ -29,13 +38,13 @@
 			$output = '';
 
 			for ($i = 0, $ii = strlen($string); $i < $ii; $i++) {
-				$char = $string[0];
+				$char = $string[$i];
 				$ord = ord($char);
 
 				if ($ord >= 65 && $ord <= 90)
-					$char = ($i > 0 ? '_' : '') . strtolower($char);
+					$char = ($i > 0 ? '_' : '') . $char;
 
-				$output .= $char;
+				$output .= strtolower($char);
 			}
 
 			return $output;

@@ -9,4 +9,14 @@
 		 * @return int|null
 		 */
 		public function getId();
+
+		/**
+		 * @return array
+		 */
+		public function getChangeSet();
+
+		/**
+		 * @return void
+		 */
+		public function onChangesPersisted();
 	}

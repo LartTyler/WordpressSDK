@@ -9,4 +9,13 @@
 	class Page extends AbstractPostObject implements ParentCapableInterface, MenuOrderCapableInterface {
 		use ParentCapableTrait;
 		use MenuOrderCapableTrait;
+
+		/**
+		 * Page constructor.
+		 *
+		 * @param array $fields
+		 */
+		public function __construct(array $fields) {
+			parent::__construct($fields);
+		}
 	}

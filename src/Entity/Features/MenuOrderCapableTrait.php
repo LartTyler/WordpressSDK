@@ -1,8 +1,6 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Entity\Features;
 
-	use DaybreakStudios\WordpressSDK\Entity\EntityTrait;
-
 	/**
 	 * For use with {@see MenuOrderCapableInterface}.
 	 *
@@ -10,8 +8,6 @@
 	 * @see     MenuOrderCapableInterface
 	 */
 	trait MenuOrderCapableTrait {
-		use EntityTrait;
-
 		/**
 		 * {@inheritdoc}
 		 */

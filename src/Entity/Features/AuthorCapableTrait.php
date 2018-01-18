@@ -1,8 +1,6 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Entity\Features;
 
-	use DaybreakStudios\WordpressSDK\Entity\EntityTrait;
-
 	/**
 	 *
 	 * For use with {@see AuthorCapableInterface}.
@@ -11,8 +9,6 @@
 	 * @see     AuthorCapableInterface
 	 */
 	trait AuthorCapableTrait {
-		use EntityTrait;
-
 		/**
 		 * {@inheritdoc}
 		 */

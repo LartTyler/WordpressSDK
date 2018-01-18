@@ -8,6 +8,11 @@
 		use EntityTrait;
 
 		/**
+		 * @var array
+		 */
+		protected $originalData;
+
+		/**
 		 * @var string[]
 		 */
 		protected $fieldTypes = [];
@@ -33,32 +38,61 @@
 
 			foreach ($fields as $field => $value) {
 				$field = StringUtil::camelize($field);
+				$field = @$fieldMap[$field] ?: $field;
 
-				if ($localField = $fieldMap[$field]) {
-					$this->fieldMap[$localField] = $field;
-
-					$field = $localField;
-				}
-
-				if ($type = @$types[$field]) {
+				if ($type = @$types[$field])
 					$value = Types::getType($type)->convertToPHPValue($value);
 
-					$this->fieldTypes[$field] = $type;
-				}
-
-				$this->fields[$field] = $value;
+				$this->set($field, $value);
 			}
 
-			$this->fields = $fields;
+			$this->originalData = $this->fields;
+		}
+
+		/**
+		 * {@inheritdoc}
+		 */
+		public function getChangeSet() {
+			if ($this->originalData === $this->fields)
+				return [];
+
+			$output = [];
+
+			foreach ($this->fields as $field => $value) {
+				// If the key wasn't in the original data, we know we have to persist it
+				if (!array_key_exists($field, $this->originalData))
+					$output[$field] = $value;
+				// If the value has changed since the object was built, it needs to be persisted
+				else if ($this->originalData[$field] !== $value)
+					$output[$field] = $value;
+			}
+
+			return $this->convertToApiFields($output);
+		}
+
+		/**
+		 * {@inheritdoc}
+		 */
+		public function onChangesPersisted() {
+			$this->originalData = $this->fields;
 		}
 
 		/**
 		 * {@inheritdoc}
 		 */
 		public function jsonSerialize() {
+			return $this->convertToApiFields($this->fields);
+		}
+
+		/**
+		 * @param array $data
+		 *
+		 * @return array
+		 */
+		protected function convertToApiFields(array $data) {
 			$output = [];
 
-			foreach ($this->fields as $localField => $value) {
+			foreach ($data as $localField => $value) {
 				if ($type = @$this->fieldTypes[$localField])
 					$value = Types::getType($type)->convertToAPIValue($value);
 

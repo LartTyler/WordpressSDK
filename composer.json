@@ -2,7 +2,7 @@
 	"name": "dbstudios/wordpress-sdk",
 	"type": "library",
 	"description": "An SDK for working with the Wordpress REST API",
-	"license": "GPL-3.0",
+	"license": "GPL-3.0-or-later",
 	"authors": [
 		{
 			"name": "Tyler Lartonoix",

@@ -187,4 +187,22 @@
 		 * @return array
 		 */
 		public function getFilters();
+
+		/**
+		 * Imports values from another Criteria object into this one.
+		 *
+		 * @param CriteriaInterface $criteria
+		 *
+		 * @return $this
+		 */
+		public function import(CriteriaInterface $criteria);
+
+		/**
+		 * Creates a new Criteria object using the values present in an existing Criteria object.
+		 *
+		 * @param CriteriaInterface $criteria
+		 *
+		 * @return static
+		 */
+		public static function from(CriteriaInterface $criteria);
 	}

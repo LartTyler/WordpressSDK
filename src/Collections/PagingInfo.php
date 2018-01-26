@@ -46,6 +46,42 @@
 		}
 
 		/**
+		 * @return int
+		 */
+		public function getPage() {
+			return $this->page;
+		}
+
+		/**
+		 * @param int $page
+		 *
+		 * @return $this
+		 */
+		public function setPage($page) {
+			$this->page = $page;
+
+			return $this;
+		}
+
+		/**
+		 * @return int
+		 */
+		public function getPageSize() {
+			return $this->pageSize;
+		}
+
+		/**
+		 * @param int $pageSize
+		 *
+		 * @return $this
+		 */
+		public function setPageSize($pageSize) {
+			$this->pageSize = $pageSize;
+
+			return $this;
+		}
+
+		/**
 		 * @return \Closure
 		 */
 		protected function getPager() {
@@ -68,10 +104,11 @@
 
 			$params = [
 				'page' => ++$this->page,
+				'per_page' => $this->pageSize,
 			] + $this->params;
 
 			/** @var EntityInterface[] $array */
-			$array = $this->getPager()->call($this, $params);
+			$array = call_user_func($this->getPager(), $params);
 
 			if (sizeof($array) !== $this->pageSize)
 				$this->atEnd = true;

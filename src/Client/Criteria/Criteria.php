@@ -1,7 +1,11 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Client\Criteria;
 
+	use DaybreakStudios\WordpressSDK\Client\Criteria\Features\AbstractFilterTrait;
+
 	class Criteria implements CriteriaInterface {
+		use AbstractFilterTrait;
+
 		/**
 		 * @var array
 		 */
@@ -167,19 +171,14 @@
 		}
 
 		/**
-		 * @param string $key
-		 *
-		 * @return bool
+		 * {@inheritdoc}
 		 */
 		protected function has($key) {
 			return isset($this->filters[$key]);
 		}
 
 		/**
-		 * @param string $key
-		 * @param mixed  $def
-		 *
-		 * @return mixed
+		 * {@inheritdoc}
 		 */
 		protected function get($key, $def = null) {
 			if ($this->has($key))
@@ -189,10 +188,7 @@
 		}
 
 		/**
-		 * @param string $key
-		 * @param mixed  $value
-		 *
-		 * @return $this
+		 * {@inheritdoc}
 		 */
 		protected function set($key, $value) {
 			if ($value === null || (is_array($value) && !$value))
@@ -204,13 +200,27 @@
 		}
 
 		/**
-		 * @param string $key
-		 *
-		 * @return $this
+		 * {@inheritdoc}
 		 */
 		protected function remove($key) {
 			unset($this->filters[$key]);
 
 			return $this;
+		}
+
+		/**
+		 * {@inheritdoc}
+		 */
+		public function import(CriteriaInterface $criteria) {
+			$this->filters = $criteria->getFilters() + $this->getFilters();
+
+			return $this;
+		}
+
+		/**
+		 * {@inheritdoc}
+		 */
+		public static function from(CriteriaInterface $criteria) {
+			return new static($criteria->getFilters());
 		}
 	}

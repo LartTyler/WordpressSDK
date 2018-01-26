@@ -6,7 +6,7 @@
 	use DaybreakStudios\WordpressSDK\Entity\Features\ParentCapableInterface;
 	use DaybreakStudios\WordpressSDK\Entity\Features\ParentCapableTrait;
 
-	class Page extends AbstractPostObject implements ParentCapableInterface, MenuOrderCapableInterface {
+	class Page extends AbstractPostObject implements PageInterface {
 		use ParentCapableTrait;
 		use MenuOrderCapableTrait;
 

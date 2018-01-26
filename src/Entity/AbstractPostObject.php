@@ -33,23 +33,7 @@
 	use DaybreakStudios\WordpressSDK\Entity\Features\TypeCapableTrait;
 	use DaybreakStudios\WordpressSDK\Mapping\Types\Types;
 
-	abstract class AbstractPostObject extends AbstractEntity implements
-		PublishCapableInterface,
-		GUIDCapableInterface,
-		LinkCapableInterface,
-		ModifiedTrackingInterface,
-		SlugCapableInterface,
-		StatusCapableInterface,
-		TypeCapableInterface,
-		PasswordCapableInterface,
-		TitleCapableInterface,
-		ContentCapableInterface,
-		AuthorCapableInterface,
-		FeaturedMediaCapableInterface,
-		CommentCapableInterface,
-		PingCapableInterface,
-		TemplateCapableInterface
-	{
+	abstract class AbstractPostObject extends AbstractEntity implements CommonPostObjectInterface {
 		use PublishCapableTrait;
 		use GUIDCapableTrait;
 		use LinkCapableTrait;

@@ -1,72 +1,66 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Client;
 
-	use DaybreakStudios\WordpressSDK\Client\Criteria\CriteriaInterface;
-	use DaybreakStudios\WordpressSDK\Entity\Category;
-	use DaybreakStudios\WordpressSDK\Entity\Post;
-	use Doctrine\Common\Collections\Collection;
-	use Doctrine\Common\Collections\Selectable;
+	use DaybreakStudios\WordpressSDK\Client\EndpointGroups\CategoryEndpointGroupInterface;
+	use DaybreakStudios\WordpressSDK\Client\EndpointGroups\PageEndpointGroupInterface;
+	use DaybreakStudios\WordpressSDK\Client\EndpointGroups\PostEndpointGroupInterface;
+	use DaybreakStudios\WordpressSDK\Client\EndpointGroups\TagEndpointGroupInterface;
+	use Psr\Http\Message\ResponseInterface;
+	use Psr\Http\Message\StreamInterface;
+	use Psr\Http\Message\UriInterface;
 
 	interface WordpressClientInterface {
 		/**
-		 * @param int         $id
-		 * @param string      $context
-		 * @param string|null $password
-		 *
-		 * @return Post|null
+		 * @return PostEndpointGroupInterface
 		 */
-		public function getPost($id, $context = RequestContext::VIEW, $password = null);
+		public function posts();
 
 		/**
-		 * @param CriteriaInterface|null $criteria
-		 * @param string                 $context
-		 *
-		 * @return Post[]|Collection|Selectable
+		 * @return PageEndpointGroupInterface
 		 */
-		public function getPosts(CriteriaInterface $criteria = null, $context = RequestContext::VIEW);
+		public function pages();
 
 		/**
-		 * @param Post $post
-		 *
-		 * @return bool
+		 * @return CategoryEndpointGroupInterface
 		 */
-		public function savePost(Post $post);
+		public function categories();
 
 		/**
-		 * @param Post|int $post
-		 * @param bool     $force
-		 *
-		 * @return bool
+		 * @return TagEndpointGroupInterface
 		 */
-		public function deletePost($post, $force = false);
+		public function tags();
 
 		/**
-		 * @param int    $id
-		 * @param string $context
+		 * @param string $path
+		 * @param array  $queryParams
 		 *
-		 * @return Category|null
+		 * @return UriInterface
 		 */
-		public function getCategory($id, $context = RequestContext::VIEW);
+		public function toUri($path, array $queryParams = []);
 
 		/**
-		 * @param CriteriaInterface|null $criteria
-		 * @param string                 $context
+		 * @param UriInterface $uri
+		 * @param array        $headers
 		 *
-		 * @return Category[]|Collection|Selectable
+		 * @return ResponseInterface
 		 */
-		public function getCategories(CriteriaInterface $criteria = null, $context = RequestContext::VIEW);
+		public function get(UriInterface $uri, array $headers = []);
 
 		/**
-		 * @param Category $category
+		 * @param UriInterface           $uri
+		 * @param StreamInterface|string $body
+		 * @param array                  $headers
 		 *
-		 * @return bool
+		 * @return ResponseInterface
 		 */
-		public function saveCategory(Category $category);
+		public function post(UriInterface $uri, $body, array $headers = []);
 
 		/**
-		 * @param Category|int $category
+		 * @param UriInterface                $uri
+		 * @param StreamInterface|string|null $body
+		 * @param array                       $headers
 		 *
-		 * @return bool
+		 * @return ResponseInterface
 		 */
-		public function deleteCategory($category);
+		public function delete(UriInterface $uri, $body = null, array $headers = []);
 	}

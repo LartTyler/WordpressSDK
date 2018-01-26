@@ -12,16 +12,9 @@
 	use DaybreakStudios\WordpressSDK\Entity\Features\TemplateCapableInterface;
 	use DaybreakStudios\WordpressSDK\Entity\Features\TemplateCapableTrait;
 
-	class Post extends AbstractPostObject implements
-		FormatCapableInterface,
-		StickyCapableInterface,
-		TemplateCapableInterface,
-		CategoryCapableInterface,
-		TagCapableInterface
-	{
+	class Post extends AbstractPostObject implements PostInterface {
 		use FormatCapableTrait;
 		use StickyCapableTrait;
-		use TemplateCapableTrait;
 		use CategoryCapableTrait;
 		use TagCapableTrait;
 

@@ -1,15 +1,14 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Client;
 
-	use DaybreakStudios\WordpressSDK\Client\Criteria\CriteriaInterface;
-	use DaybreakStudios\WordpressSDK\Client\Exceptions\ResponseException;
-	use DaybreakStudios\WordpressSDK\Collections\PagedCollection;
-	use DaybreakStudios\WordpressSDK\Collections\PagingInfo;
+	use DaybreakStudios\WordpressSDK\Client\EndpointGroups\CategoryEndpointGroup;
+	use DaybreakStudios\WordpressSDK\Client\EndpointGroups\PageEndpointGroup;
+	use DaybreakStudios\WordpressSDK\Client\EndpointGroups\PostEndpointGroup;
+	use DaybreakStudios\WordpressSDK\Client\EndpointGroups\TagEndpointGroup;
 	use DaybreakStudios\WordpressSDK\Entity\Category;
-	use DaybreakStudios\WordpressSDK\Entity\EntityInterface;
+	use DaybreakStudios\WordpressSDK\Entity\Page;
 	use DaybreakStudios\WordpressSDK\Entity\Post;
-	use Doctrine\Common\Collections\Collection;
-	use Doctrine\Common\Collections\Selectable;
+	use DaybreakStudios\WordpressSDK\Entity\Tag;
 	use Http\Client\Common\HttpMethodsClient;
 	use Http\Client\Common\Plugin\AuthenticationPlugin;
 	use Http\Client\Common\Plugin\BaseUriPlugin;
@@ -35,6 +34,21 @@
 		 * @var HttpMethodsClient
 		 */
 		protected $httpClient;
+
+		/**
+		 * @var array
+		 */
+		protected $endpointGroups = [
+			Post::class => PostEndpointGroup::class,
+			Category::class => CategoryEndpointGroup::class,
+			Page::class => PageEndpointGroup::class,
+			Tag::class => TagEndpointGroup::class,
+		];
+
+		/**
+		 * @var EndpointGroupInterface[]
+		 */
+		protected $endpointGroupInstances = [];
 
 		/**
 		 * WordpressClient constructor.
@@ -70,6 +84,64 @@
 		}
 
 		/**
+		 * {@inheritdoc}
+		 */
+		public function posts() {
+			return $this->getEndpointGroup(Post::class);
+		}
+
+		/**
+		 * {@inheritdoc}
+		 */
+		public function categories() {
+			return $this->getEndpointGroup(Category::class);
+		}
+
+		/**
+		 * {@inheritdoc}
+		 */
+		public function pages() {
+			return $this->getEndpointGroup(Page::class);
+		}
+
+		/**
+		 * {@inheritdoc}
+		 */
+		public function tags() {
+			return $this->getEndpointGroup(Tag::class);
+		}
+
+		/**
+		 * @param string $entityClass
+		 *
+		 * @return EndpointGroupInterface
+		 */
+		protected function getEndpointGroup($entityClass) {
+			if (isset($this->endpointGroupInstances[$entityClass]))
+				return $this->endpointGroupInstances[$entityClass];
+
+			$class = @$this->endpointGroups[$entityClass];
+
+			if (!$class)
+				throw new \InvalidArgumentException($entityClass . ' is not a supported entity');
+
+			return $this->endpointGroupInstances[$entityClass] = new $class($this, $entityClass);
+		}
+
+		/**
+		 * @param string $entityClass
+		 * @param string $class
+		 *
+		 * @return void
+		 */
+		protected function setEndpointGroup($entityClass, $class) {
+			$this->endpointGroups[$entityClass] = $class;
+
+			if (isset($this->endpointGroupInstances[$entityClass]))
+				unset($this->endpointGroupInstances[$entityClass]);
+		}
+
+		/**
 		 * @return UriFactory
 		 */
 		protected function getUriFactory() {
@@ -84,198 +156,12 @@
 		}
 
 		/**
-		 * {@inheritdoc}
-		 */
-		public function getPost($id, $context = RequestContext::VIEW, $password = null) {
-			$params = [
-				'context' => $context,
-			];
-
-			if ($password)
-				$params['password'] = $password;
-
-			return $this->getObject(Post::class, $this->toUri('/wp/v2/posts/' . $id, $params));
-		}
-
-		/**
-		 * {@inheritdoc}
-		 */
-		public function getPosts(CriteriaInterface $criteria = null, $context = RequestContext::VIEW) {
-			return $this->getObjects(Post::class, '/wp/v2/posts', $criteria, $context);
-		}
-
-		/**
-		 * {@inheritdoc}
-		 */
-		public function savePost(Post $post) {
-			return $this->saveObject($post, $this->toUri('/wp/v2/posts/' . $post->getId()));
-		}
-
-		/**
-		 * {@inheritdoc}
-		 */
-		public function deletePost($post, $force = false) {
-			if ($post instanceof Post)
-				$post = $post->getId();
-
-			return $this->deleteObject($this->toUri('/wp/v2/posts/' . $post), $force);
-		}
-
-		/**
-		 * {@inheritdoc}
-		 */
-		public function getCategory($id, $context = RequestContext::VIEW) {
-			return $this->getObject(Category::class, $this->toUri('/wp/v2/categories/' . $id, [
-				'context' => $context,
-			]));
-		}
-
-		/**
-		 * {@inheritdoc}
-		 */
-		public function getCategories(CriteriaInterface $criteria = null, $context = RequestContext::VIEW) {
-			return $this->getObjects(Category::class, '/wp/v2/categories', $criteria, $context);
-		}
-
-		/**
-		 * {@inheritdoc}
-		 */
-		public function saveCategory(Category $category) {
-			return $this->saveObject($category, $this->toUri('/wp/v2/cateogires/' . $category->getId()));
-		}
-
-		/**
-		 * {@inheritdoc}
-		 */
-		public function deleteCategory($category) {
-			if ($category instanceof Category)
-				$category = $category->getId();
-
-			return $this->deleteObject($this->toUri('/wp/v2/categories/' . $category), true);
-		}
-
-		/**
-		 * @param string       $class
-		 * @param UriInterface $uri
-		 *
-		 * @return EntityInterface|null
-		 * @throws ResponseException
-		 * @internal
-		 */
-		public function getObject($class, UriInterface $uri) {
-			$response = $this->get($uri);
-
-			if ($response->getStatusCode() === 404)
-				return null;
-			else if ($response->getStatusCode() !== 200)
-				throw new ResponseException($response);
-
-			return new $class(json_decode($response->getBody()->getContents(), true));
-		}
-
-		/**
-		 * @param string                 $class
-		 * @param string                 $path
-		 * @param CriteriaInterface|null $criteria
-		 * @param string                 $context
-		 *
-		 * @return EntityInterface[]|Collection|Selectable
-		 * @internal
-		 */
-		public function getObjects(
-			$class,
-			$path,
-			CriteriaInterface $criteria = null,
-			$context = RequestContext::VIEW
-		) {
-			if (!$criteria->getContext())
-				$criteria->setContext($context);
-
-			$params = $criteria->getFilters();
-			$objects = $this->getObjectsData($class, $path, $params);
-
-			$client = $this;
-
-			$paging = new PagingInfo(function(array $params) use ($client, $class, $path) {
-				return $client->getObjectsData($class, $path, $params);
-			}, $params);
-
-			return new PagedCollection($objects, $paging);
-		}
-
-		/**
-		 * @param string $class
-		 * @param string $path
-		 * @param array  $filters
-		 *
-		 * @return EntityInterface[]
-		 * @throws ResponseException
-		 * @internal
-		 */
-		public function getObjectsData($class, $path, array $filters) {
-			$response = $this->get($this->toUri($path, $filters));
-
-			if ($response->getStatusCode() !== 200)
-				throw new ResponseException($response);
-
-			return array_map(function(array $fields) use ($class) {
-				return new $class($fields);
-			}, json_decode($response->getBody()->getContents(), true));
-		}
-
-		/**
-		 * @param EntityInterface $entity
-		 * @param UriInterface    $uri
-		 *
-		 * @return bool
-		 * @throws ResponseException
-		 * @internal
-		 */
-		public function saveObject(EntityInterface $entity, UriInterface $uri) {
-			$changeSet = $entity->getChangeSet();
-
-			if (!$changeSet)
-				return false;
-
-			$response = $this->post($uri, json_encode($changeSet));
-
-			if ($response->getStatusCode() !== 200)
-				throw new ResponseException($response);
-
-			$entity->onChangesPersisted();
-
-			return true;
-		}
-
-		/**
-		 * @param UriInterface $uri
-		 * @param bool         $force
-		 *
-		 * @return bool
-		 * @throws ResponseException
-		 */
-		public function deleteObject(UriInterface $uri, $force) {
-			$response = $this->delete($uri, json_encode([
-				'force' => $force,
-			]));
-
-			if ($response->getStatusCode() === 410)
-				return false;
-			else if ($response->getStatusCode() === 403)
-				return false;
-			else if ($response->getStatusCode() !== 200)
-				throw new ResponseException($response);
-
-			return true;
-		}
-
-		/**
 		 * @param string $path
 		 * @param array  $queryParams
 		 *
 		 * @return UriInterface
 		 */
-		protected function toUri($path, array $queryParams = []) {
+		public function toUri($path, array $queryParams = []) {
 			$uri = $this->getUriFactory()->createUri($path);
 
 			if ($queryParams)
@@ -290,7 +176,7 @@
 		 *
 		 * @return ResponseInterface
 		 */
-		protected function get(UriInterface $uri, array $headers = []) {
+		public function get(UriInterface $uri, array $headers = []) {
 			return $this->getHttpClient()->get($uri, $headers);
 		}
 
@@ -301,7 +187,7 @@
 		 *
 		 * @return ResponseInterface
 		 */
-		protected function post(UriInterface $uri, $body, array $headers = []) {
+		public function post(UriInterface $uri, $body, array $headers = []) {
 			return $this->getHttpClient()->post($uri, $headers + [
 					'Content-Type' => 'application/json',
 				], $body);
@@ -314,7 +200,7 @@
 		 *
 		 * @return ResponseInterface
 		 */
-		protected function delete(UriInterface $uri, $body = null, array $headers = []) {
+		public function delete(UriInterface $uri, $body = null, array $headers = []) {
 			return $this->getHttpClient()->delete($uri, $headers + [
 					'Content-Type' => 'application/json',
 				], $body);

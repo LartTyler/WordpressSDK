@@ -14,13 +14,7 @@
 	use DaybreakStudios\WordpressSDK\Entity\Features\TaxonomyTypeCapableInterface;
 	use DaybreakStudios\WordpressSDK\Entity\Features\TaxonomyTypeCapableTrait;
 
-	abstract class AbstractTaxonomyObject extends AbstractEntity implements
-		CountCapableInterface,
-		DescriptionCapableInterface,
-		LinkCapableInterface,
-		NameCapableInterface,
-		SlugCapableInterface,
-		TaxonomyTypeCapableInterface
+	abstract class AbstractTaxonomyObject extends AbstractEntity implements TaxonomyObjectInterface
 	{
 		use CountCapableTrait;
 		use DescriptionCapableTrait;

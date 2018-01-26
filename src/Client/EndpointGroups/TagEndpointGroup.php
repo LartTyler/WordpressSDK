@@ -4,7 +4,6 @@
 	use DaybreakStudios\WordpressSDK\Client\AbstractEndpointGroup;
 	use DaybreakStudios\WordpressSDK\Client\Criteria\TagCriteriaInterface;
 	use DaybreakStudios\WordpressSDK\Client\RequestContext;
-	use DaybreakStudios\WordpressSDK\Entity\EntityInterface;
 	use DaybreakStudios\WordpressSDK\Entity\Tag;
 	use DaybreakStudios\WordpressSDK\Entity\TagInterface;
 

@@ -1,7 +1,7 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Entity;
 
-	use DaybreakStudios\WordpressSDK\Entity\Features\GUIDCapableInterface;
+	use DaybreakStudios\WordpressSDK\Entity\Features\GuidCapableInterface;
 	use DaybreakStudios\WordpressSDK\Entity\Features\PublishCapableInterface;
 	use DaybreakStudios\WordpressSDK\Entity\Features\LinkCapableInterface;
 	use DaybreakStudios\WordpressSDK\Entity\Features\ModifiedTrackingInterface;
@@ -20,7 +20,7 @@
 	interface CommonPostObjectInterface extends
 		EntityInterface,
 		PublishCapableInterface,
-		GUIDCapableInterface,
+		GuidCapableInterface,
 		LinkCapableInterface,
 		ModifiedTrackingInterface,
 		SlugCapableInterface,

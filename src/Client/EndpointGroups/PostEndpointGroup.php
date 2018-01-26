@@ -3,13 +3,8 @@
 
 	use DaybreakStudios\WordpressSDK\Client\AbstractEndpointGroup;
 	use DaybreakStudios\WordpressSDK\Client\Criteria\PostCriteriaInterface;
-	use DaybreakStudios\WordpressSDK\Client\CrudEndpointsTrait;
 	use DaybreakStudios\WordpressSDK\Client\RequestContext;
-	use DaybreakStudios\WordpressSDK\Client\WordpressClientInterface;
-	use DaybreakStudios\WordpressSDK\Entity\Post;
 	use DaybreakStudios\WordpressSDK\Entity\PostInterface;
-	use Doctrine\Common\Collections\Collection;
-	use Doctrine\Common\Collections\Selectable;
 
 	class PostEndpointGroup extends AbstractEndpointGroup implements PostEndpointGroupInterface {
 		/**

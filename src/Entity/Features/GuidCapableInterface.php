@@ -2,7 +2,7 @@
 
 	namespace DaybreakStudios\WordpressSDK\Entity\Features;
 
-	interface GUIDCapableInterface {
+	interface GuidCapableInterface {
 		/**
 		 * The GUID for the object
 		 */
@@ -11,5 +11,5 @@
 		/**
 		 * @return string
 		 */
-		public function getGUID();
+		public function getGuid();
 	}

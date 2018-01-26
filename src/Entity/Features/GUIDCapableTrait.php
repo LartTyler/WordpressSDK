@@ -5,13 +5,13 @@
 	 * For use with {@see GUIDCapableInterface}.
 	 *
 	 * @package DaybreakStudios\WordpressSDK\Entity\Features
-	 * @see     GUIDCapableInterface
+	 * @see     GuidCapableInterface
 	 */
 	trait GUIDCapableTrait {
 		/**
 		 * {@inheritdoc}
 		 */
 		public function getGUID() {
-			return $this->get(GUIDCapableInterface::FIELD_GUID);
+			return $this->get(GuidCapableInterface::FIELD_GUID);
 		}
 	}

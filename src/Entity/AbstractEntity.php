@@ -73,7 +73,14 @@
 		/**
 		 * {@inheritdoc}
 		 */
-		public function onChangesPersisted() {
+		public function onChangesPersisted(array $changes) {
+			foreach ($changes as $key => $value) {
+				if (isset($this->fields[$key]) && $this->fields[$key] === $value)
+					continue;
+
+				$this->fields[$key] = $value;
+			}
+
 			$this->originalData = $this->fields;
 		}
 

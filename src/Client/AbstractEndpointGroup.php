@@ -141,7 +141,7 @@
 			if ($response->getStatusCode() !== 200)
 				throw new ResponseException($response);
 
-			$entity->onChangesPersisted();
+			$entity->onChangesPersisted(json_decode($response->getBody()->getContents(), true));
 
 			return true;
 		}

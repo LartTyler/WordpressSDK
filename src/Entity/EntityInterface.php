@@ -16,7 +16,10 @@
 		public function getChangeSet();
 
 		/**
+		 * @param array $changes
+		 *
 		 * @return void
+		 * @internal
 		 */
-		public function onChangesPersisted();
+		public function onChangesPersisted(array $changes);
 	}

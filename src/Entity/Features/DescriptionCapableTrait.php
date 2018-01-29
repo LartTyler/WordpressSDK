@@ -9,14 +9,16 @@
 	 */
 	trait DescriptionCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string|null
 		 */
 		public function getDescription() {
 			return $this->get(DescriptionCapableInterface::FIELD_DESCRIPTION);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $description
+		 *
+		 * @return $this
 		 */
 		public function setDescription($description) {
 			return $this->set(DescriptionCapableInterface::FIELD_DESCRIPTION, $description);

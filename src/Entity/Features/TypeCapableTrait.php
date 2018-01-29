@@ -9,7 +9,7 @@
 	 */
 	trait TypeCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string
 		 */
 		public function getType() {
 			return $this->get(TypeCapableInterface::FIELD_TYPE);

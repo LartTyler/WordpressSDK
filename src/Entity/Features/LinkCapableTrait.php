@@ -9,7 +9,7 @@
 	 */
 	trait LinkCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string
 		 */
 		public function getLink() {
 			return $this->get(LinkCapableInterface::FIELD_LINK);

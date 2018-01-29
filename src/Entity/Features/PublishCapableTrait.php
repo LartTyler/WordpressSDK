@@ -9,14 +9,16 @@
 	 */
 	trait PublishCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return \DateTime
 		 */
 		public function getPublishDate() {
 			return $this->get(PublishCapableInterface::FIELD_PUBLISH_DATE);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param \DateTime $publishDate
+		 *
+		 * @return $this
 		 */
 		public function setPublishDate(\DateTime $publishDate) {
 			return $this->set(PublishCapableInterface::FIELD_PUBLISH_DATE, $publishDate);

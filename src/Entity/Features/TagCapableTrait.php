@@ -9,14 +9,16 @@
 	 */
 	trait TagCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return int[]
 		 */
 		public function getTags() {
 			return $this->get(TagCapableInterface::FIELD_TAGS, []);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param int[] $tags
+		 *
+		 * @return $this
 		 */
 		public function setTags(array $tags) {
 			return $this->set(TagCapableInterface::FIELD_TAGS, $tags);

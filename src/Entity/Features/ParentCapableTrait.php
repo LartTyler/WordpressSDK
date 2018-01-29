@@ -9,14 +9,16 @@
 	 */
 	trait ParentCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return int|null
 		 */
 		public function getParent() {
 			return $this->get(ParentCapableInterface::FIELD_PARENT);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param int $parent
+		 *
+		 * @return $this
 		 */
 		public function setParent($parent) {
 			return $this->set(ParentCapableInterface::FIELD_PARENT, $parent);

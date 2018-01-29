@@ -9,14 +9,16 @@
 	 */
 	trait NameCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string
 		 */
 		public function getName() {
 			return $this->get(NameCapableInterface::FIELD_NAME);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $name
+		 *
+		 * @return $this
 		 */
 		public function setName($name) {
 			return $this->set(NameCapableInterface::FIELD_NAME, $name);

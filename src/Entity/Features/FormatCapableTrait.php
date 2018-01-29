@@ -9,7 +9,7 @@
 	 */
 	trait FormatCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string|null
 		 */
 		public function getFormat() {
 			return $this->get(FormatCapableInterface::FIELD_FORMAT);

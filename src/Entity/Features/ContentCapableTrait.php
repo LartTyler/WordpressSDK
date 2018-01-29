@@ -9,28 +9,32 @@
 	 */
 	trait ContentCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string|null
 		 */
 		public function getContent() {
 			return $this->get(ContentCapableInterface::FIELD_CONTENT);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $content
+		 *
+		 * @return $this
 		 */
 		public function setContent($content) {
 			return $this->set(ContentCapableInterface::FIELD_CONTENT, $content);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @return string|null
 		 */
 		public function getExcerpt() {
 			return $this->get(ContentCapableInterface::FIELD_EXCERPT);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $excerpt
+		 *
+		 * @return $this
 		 */
 		public function setExcerpt($excerpt) {
 			return $this->set(ContentCapableInterface::FIELD_EXCERPT, $excerpt);

@@ -9,14 +9,16 @@
 	 */
 	trait CategoryCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return int[]
 		 */
 		public function getCategories() {
 			return $this->get(CategoryCapableInterface::FIELD_CATEGORIES, []);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param int[] $categories
+		 *
+		 * @return $this
 		 */
 		public function setCategories(array $categories) {
 			return $this->set(CategoryCapableInterface::FIELD_CATEGORIES, $categories);

@@ -9,7 +9,7 @@
 	 */
 	trait ModifiedTrackingTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return \DateTime
 		 */
 		public function getModifiedDate() {
 			return $this->get(ModifiedTrackingInterface::FIELD_MODIFIED_DATE);

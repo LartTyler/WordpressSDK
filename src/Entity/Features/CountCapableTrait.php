@@ -9,7 +9,7 @@
 	 */
 	trait CountCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return int
 		 */
 		public function getCount() {
 			return $this->get(CountCapableInterface::FIELD_COUNT, 0);

@@ -10,7 +10,7 @@
 	 */
 	trait AuthorCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string|null
 		 */
 		public function getAuthor() {
 			return $this->get(AuthorCapableInterface::FIELD_AUTHOR);

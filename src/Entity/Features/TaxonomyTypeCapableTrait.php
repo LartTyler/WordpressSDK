@@ -9,7 +9,7 @@
 	 */
 	trait TaxonomyTypeCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string
 		 */
 		public function getTaxonomyType() {
 			return $this->get(TaxonomyTypeCapableInterface::FIELD_TAXONOMY_TYPE);

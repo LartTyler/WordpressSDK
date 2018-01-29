@@ -9,14 +9,16 @@
 	 */
 	trait SlugCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string
 		 */
 		public function getSlug() {
 			return $this->get(SlugCapableInterface::FIELD_SLUG);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $slug
+		 *
+		 * @return $this
 		 */
 		public function setSlug($slug) {
 			return $this->set(SlugCapableInterface::FIELD_SLUG, $slug);

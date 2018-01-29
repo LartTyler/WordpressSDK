@@ -9,14 +9,16 @@
 	 */
 	trait TemplateCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string
 		 */
 		public function getTemplate() {
 			return $this->get(TemplateCapableInterface::FIELD_TEMPLATE);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $template
+		 *
+		 * @return $this
 		 */
 		public function setTemplate($template) {
 			return $this->set(TemplateCapableInterface::FIELD_TEMPLATE, $template);

@@ -9,14 +9,16 @@
 	 */
 	trait CommentCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string|null
 		 */
 		public function getCommentStatus() {
 			return $this->get(CommentCapableInterface::FIELD_COMMENT_STATUS);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $commentStatus
+		 *
+		 * @return $this
 		 */
 		public function setCommentStatus($commentStatus) {
 			return $this->set(CommentCapableInterface::FIELD_COMMENT_STATUS, $commentStatus);

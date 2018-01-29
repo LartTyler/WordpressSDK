@@ -9,14 +9,16 @@
 	 */
 	trait StickyCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return bool
 		 */
 		public function isSticky() {
 			return $this->get(StickyCapableInterface::FIELD_STICKY);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param bool $sticky
+		 *
+		 * @return $this
 		 */
 		public function setSticky($sticky) {
 			return $this->set(StickyCapableInterface::FIELD_STICKY, $sticky);

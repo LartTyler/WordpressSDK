@@ -9,14 +9,16 @@
 	 */
 	trait TitleCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string|null
 		 */
 		public function getTitle() {
 			return $this->get(TitleCapableInterface::FIELD_TITLE);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $title
+		 *
+		 * @return $this
 		 */
 		public function setTitle($title) {
 			return $this->set(TitleCapableInterface::FIELD_TITLE, $title);

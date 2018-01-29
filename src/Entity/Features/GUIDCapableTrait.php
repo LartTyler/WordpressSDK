@@ -9,7 +9,7 @@
 	 */
 	trait GUIDCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string
 		 */
 		public function getGUID() {
 			return $this->get(GuidCapableInterface::FIELD_GUID);

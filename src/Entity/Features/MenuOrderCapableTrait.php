@@ -9,14 +9,16 @@
 	 */
 	trait MenuOrderCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return int
 		 */
 		public function getMenuOrder() {
 			return $this->get(MenuOrderCapableInterface::FIELD_MENU_ORDER, 0);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param int $menuOrder
+		 *
+		 * @return $this
 		 */
 		public function setMenuOrder($menuOrder) {
 			return $this->set(MenuOrderCapableInterface::FIELD_MENU_ORDER, $menuOrder ?: 0);

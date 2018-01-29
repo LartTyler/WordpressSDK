@@ -9,14 +9,16 @@
 	 */
 	trait PasswordCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string|null
 		 */
 		public function getPassword() {
 			return $this->get(PasswordCapableInterface::FIELD_PASSWORD);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $password
+		 *
+		 * @return $this
 		 */
 		public function setPassword($password) {
 			return $this->set(PasswordCapableInterface::FIELD_PASSWORD, $password);

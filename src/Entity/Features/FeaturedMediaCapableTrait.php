@@ -9,14 +9,16 @@
 	 */
 	trait FeaturedMediaCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return int|null
 		 */
 		public function getFeaturedMedia() {
 			return $this->get(FeaturedMediaCapableInterface::FIELD_FEATURED_MEDIA);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param int $featuredMedia
+		 *
+		 * @return $this
 		 */
 		public function setFeaturedMedia($featuredMedia) {
 			return $this->set(FeaturedMediaCapableInterface::FIELD_FEATURED_MEDIA, $featuredMedia);

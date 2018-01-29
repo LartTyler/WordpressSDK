@@ -9,14 +9,16 @@
 	 */
 	trait StatusCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string
 		 */
 		public function getStatus() {
 			return $this->get(StatusCapableInterface::FIELD_STATUS);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $status
+		 *
+		 * @return $this
 		 */
 		public function setStatus($status) {
 			return $this->set(StatusCapableInterface::FIELD_STATUS, $status);

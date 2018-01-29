@@ -9,14 +9,16 @@
 	 */
 	trait PingCapableTrait {
 		/**
-		 * {@inheritdoc}
+		 * @return string
 		 */
 		public function getPingStatus() {
 			return $this->get(PingCapableInterface::FIELD_PING_STATUS);
 		}
 
 		/**
-		 * {@inheritdoc}
+		 * @param string $pingStatus
+		 *
+		 * @return $this
 		 */
 		public function setPingStatus($pingStatus) {
 			return $this->set(PingCapableInterface::FIELD_PING_STATUS, $pingStatus);

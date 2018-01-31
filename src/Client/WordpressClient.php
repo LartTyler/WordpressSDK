@@ -23,6 +23,7 @@
 	use Psr\Http\Message\ResponseInterface;
 	use Psr\Http\Message\StreamInterface;
 	use Psr\Http\Message\UriInterface;
+	use Psr\Log\LoggerInterface;
 
 	class WordpressClient implements WordpressClientInterface {
 		/**
@@ -34,6 +35,11 @@
 		 * @var HttpMethodsClient
 		 */
 		protected $httpClient;
+
+		/**
+		 * @var LoggerInterface|null
+		 */
+		protected $logger = null;
 
 		/**
 		 * @var array
@@ -83,6 +89,24 @@
 				new PluginClient($httpClient ?: HttpClientDiscovery::find(), $plugins),
 				$requestFactory ?: MessageFactoryDiscovery::find()
 			);
+		}
+
+		/**
+		 * @param LoggerInterface|null $logger
+		 *
+		 * @return $this
+		 */
+		public function setLogger(LoggerInterface $logger = null) {
+			$this->logger = $logger;
+
+			return $this;
+		}
+
+		/**
+		 * @return null|LoggerInterface
+		 */
+		public function getLogger() {
+			return $this->logger;
 		}
 
 		/**
@@ -179,6 +203,11 @@
 		 * @return ResponseInterface
 		 */
 		public function get(UriInterface $uri, array $headers = []) {
+			if ($this->getLogger())
+				$this->getLogger()->debug('Sending GET request to ' . $uri, [
+					'headers' => $headers,
+				]);
+
 			return $this->getHttpClient()->get($uri, $headers);
 		}
 
@@ -190,6 +219,12 @@
 		 * @return ResponseInterface
 		 */
 		public function post(UriInterface $uri, $body, array $headers = []) {
+			if ($this->getLogger())
+				$this->getLogger()->debug('Sending POST request to ' . $uri, [
+					'body' => $body,
+					'headers' => $headers,
+				]);
+
 			return $this->getHttpClient()->post($uri, $headers + [
 					'Content-Type' => 'application/json',
 				], $body);
@@ -203,6 +238,12 @@
 		 * @return ResponseInterface
 		 */
 		public function delete(UriInterface $uri, $body = null, array $headers = []) {
+			if ($this->getLogger())
+				$this->getLogger()->debug('Sending DELETE request to ' . $uri, [
+					'body' => $body,
+					'headers' => $headers,
+				]);
+
 			return $this->getHttpClient()->delete($uri, $headers + [
 					'Content-Type' => 'application/json',
 				], $body);

@@ -27,7 +27,7 @@
 		 * {@inheritdoc}
 		 */
 		public function save(CategoryInterface $category) {
-			return $this->saveObject($category, $this->toUri('/wp/v2/categories/' . $category->getId()));
+			return $this->saveObject('/wp/v2/categories', $category);
 		}
 
 		/**

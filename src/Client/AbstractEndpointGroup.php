@@ -124,17 +124,23 @@
 		}
 
 		/**
+		 * @param string          $path
 		 * @param EntityInterface $entity
-		 * @param UriInterface    $uri
 		 *
 		 * @return bool
 		 * @throws ResponseException
+		 *
 		 */
-		protected function saveObject(EntityInterface $entity, UriInterface $uri) {
+		protected function saveObject($path, EntityInterface $entity) {
 			$changeSet = $entity->getChangeSet();
 
 			if (!$changeSet)
 				return false;
+
+			if ($entity->getId())
+				$uri = $this->toUri(rtrim($path, '/') . '/' . $entity->getId());
+			else
+				$uri = $this->toUri($path);
 
 			$response = $this->getWordpressClient()->post($uri, json_encode($changeSet));
 

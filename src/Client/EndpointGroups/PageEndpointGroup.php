@@ -27,7 +27,7 @@
 		 * {@inheritdoc}
 		 */
 		public function save(PageInterface $page) {
-			return $this->saveObject($page, $this->toUri('/wp/v2/pages/' . $page->getId()));
+			return $this->saveObject('/wp/v2/pages', $page);
 		}
 
 		/**

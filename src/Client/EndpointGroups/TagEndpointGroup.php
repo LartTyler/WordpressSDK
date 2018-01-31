@@ -28,7 +28,7 @@
 		 * {@inheritdoc}
 		 */
 		public function save(Tag $tag) {
-			return $this->saveObject($tag, $this->toUri('/wp/v2/tags/' . $tag->getId()));
+			return $this->saveObject('/wp/v2/tags', $tag);
 		}
 
 		/**

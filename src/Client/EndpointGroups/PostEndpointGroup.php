@@ -25,7 +25,7 @@
 		 * {@inheritdoc}
 		 */
 		public function save(PostInterface $post) {
-			return $this->saveObject($post, $this->toUri('/wp/v2/posts/' . $post->getId()));
+			return $this->saveObject('/wp/v2/posts', $post);
 		}
 
 		/**

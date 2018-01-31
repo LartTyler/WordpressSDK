@@ -70,8 +70,10 @@
 		) {
 			$this->uriFactory = $uriFactory ?: UriFactoryDiscovery::find();
 
+			$uri = $this->uriFactory->createUri($domain)->withHost($domain)->withPath($basePath ?: '/wp-json');
+
 			$plugins = [
-				new BaseUriPlugin($this->uriFactory->createUri($domain)->withPath($basePath ?: '/wp-json')),
+				new BaseUriPlugin($uri),
 			];
 
 			if ($authentication)

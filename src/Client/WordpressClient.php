@@ -70,7 +70,7 @@
 		) {
 			$this->uriFactory = $uriFactory ?: UriFactoryDiscovery::find();
 
-			$uri = $this->uriFactory->createUri($domain)->withHost($domain)->withPath($basePath ?: '/wp-json');
+			$uri = $this->uriFactory->createUri($basePath ?: '/wp-json')->withHost($domain);
 
 			$plugins = [
 				new BaseUriPlugin($uri),

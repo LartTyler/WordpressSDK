@@ -38,9 +38,9 @@
 
 			foreach ($fields as $field => $value) {
 				$field = StringUtil::camelize($field);
-				$field = @$fieldMap[$field] ?: $field;
+				$field = isset($fieldMap[$field]) ? $fieldMap[$field] : $field;
 
-				if ($type = @$types[$field])
+				if (isset($types[$field]) && $type = $types[$field])
 					$value = Types::getType($type)->convertToPHPValue($value);
 
 				$this->set($field, $value);
@@ -100,10 +100,11 @@
 			$output = [];
 
 			foreach ($data as $localField => $value) {
-				if ($type = @$this->fieldTypes[$localField])
+				if (isset($this->fieldTypes[$localField]) && $type = $this->fieldTypes[$localField])
 					$value = Types::getType($type)->convertToAPIValue($value);
 
-				$apiField = StringUtil::underscore(@$this->fieldMap[$localField] ?: $localField);
+				$apiField = StringUtil::underscore(isset($this->fieldMap[$localField]) ? $this->fieldMap[$localField] :
+					$localField);
 
 				$output[$apiField] = $value;
 			}

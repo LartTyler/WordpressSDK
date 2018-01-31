@@ -23,9 +23,10 @@
 	use Psr\Http\Message\ResponseInterface;
 	use Psr\Http\Message\StreamInterface;
 	use Psr\Http\Message\UriInterface;
+	use Psr\Log\LoggerAwareInterface;
 	use Psr\Log\LoggerInterface;
 
-	class WordpressClient implements WordpressClientInterface {
+	class WordpressClient implements WordpressClientInterface, LoggerAwareInterface {
 		/**
 		 * @var UriFactory
 		 */

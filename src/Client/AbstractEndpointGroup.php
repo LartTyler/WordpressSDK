@@ -8,13 +8,15 @@
 	use DaybreakStudios\WordpressSDK\Collections\PagingInfo;
 	use DaybreakStudios\WordpressSDK\Entity\EntityInterface;
 	use Psr\Http\Message\UriInterface;
+	use Psr\Log\LoggerAwareInterface;
+	use Psr\Log\LoggerInterface;
 
 	/**
 	 * Class AbstractEndpointGroup
 	 *
 	 * @package DaybreakStudios\WordpressSDK\Client
 	 */
-	abstract class AbstractEndpointGroup implements EndpointGroupInterface {
+	abstract class AbstractEndpointGroup implements EndpointGroupInterface, LoggerAwareInterface {
 		/**
 		 * @var WordpressClientInterface
 		 */
@@ -26,6 +28,11 @@
 		protected $entityClass;
 
 		/**
+		 * @var LoggerInterface|null
+		 */
+		protected $logger = null;
+
+		/**
 		 * AbstractEndpointGroup constructor.
 		 *
 		 * @param WordpressClientInterface $client
@@ -34,6 +41,15 @@
 		public function __construct(WordpressClientInterface $client, $entityClass) {
 			$this->client = $client;
 			$this->entityClass = $entityClass;
+		}
+
+		/**
+		 * @param LoggerInterface|null $logger
+		 *
+		 * @return void
+		 */
+		public function setLogger(LoggerInterface $logger = null) {
+			$this->logger = $logger;
 		}
 
 		/**
@@ -67,12 +83,30 @@
 		 * @throws ResponseException
 		 */
 		protected function getObject(UriInterface $uri) {
+			if ($this->logger)
+				$this->logger->debug('Retrieving object located at ' . $uri);
+
 			$response = $this->getWordpressClient()->get($uri);
 
-			if ($response->getStatusCode() === 404)
+			if ($response->getStatusCode() === 404) {
+				if ($this->logger)
+					$this->logger->debug('WP object not found', [
+						'uri' => (string)$uri,
+					]);
+
 				return null;
-			else if ($response->getStatusCode() !== 200)
+			} else if ($response->getStatusCode() !== 200) {
+				if ($this->logger)
+					$this->logger->error('Encountered an unhandled HTTP status code while retrieving object', [
+						'uri' => (string)$uri,
+						'statusCode' => $response->getStatusCode(),
+						'reasonPhrase' => $response->getReasonPhrase(),
+						'responseHeaders' => $response->getHeaders(),
+						'responseBody' => $response->getBody()->getContents(),
+					]);
+
 				throw new ResponseException($response);
+			}
 
 			$class = $this->getEntityClass();
 
@@ -94,9 +128,22 @@
 
 			$class = $this->getEntityClass();
 			$params = $criteria->getFilters();
+
+			$logger = $this->logger;
+
+			if ($logger)
+				$logger->debug('Retrieving collection located at ' . $path, [
+					'filters' => $params,
+				]);
+
 			$objects = $this->getObjectsData($path, $params);
 
-			$paging = new PagingInfo((function(array $params) use ($class, $path) {
+			$paging = new PagingInfo((function(array $params) use ($class, $path, $logger) {
+				if ($logger)
+					$logger->debug('Retrieving next page from ' . $path, [
+						'filters' => $params,
+					]);
+
 				return $this->getObjectsData($path, $params);
 			})->bindTo($this), $params);
 
@@ -113,8 +160,18 @@
 		protected function getObjectsData($path, array $filters) {
 			$response = $this->getWordpressClient()->get($this->getWordpressClient()->toUri($path, $filters));
 
-			if ($response->getStatusCode() !== 200)
+			if ($response->getStatusCode() !== 200) {
+				if ($this->logger)
+					$this->logger->error('Encountered an unhandled HTTP status code while retrieving object collection', [
+						'path' => $path,
+						'statusCode' => $response->getStatusCode(),
+						'reasonPhrase' => $response->getReasonPhrase(),
+						'responseHeaders' => $response->getHeaders(),
+						'responseBody' => $response->getBody()->getContents(),
+					]);
+
 				throw new ResponseException($response);
+			}
 
 			$class = $this->getEntityClass();
 
@@ -142,10 +199,26 @@
 			else
 				$uri = $this->toUri($path);
 
+
+			if ($this->logger)
+				$this->logger->debug('Saving object to ' . $uri, [
+					'isNewEntity' => $entity->getId() === null,
+				]);
+
 			$response = $this->getWordpressClient()->post($uri, json_encode($changeSet));
 
-			if ($response->getStatusCode() !== 200)
+			if ($response->getStatusCode() !== 200) {
+				if ($this->logger)
+					$this->logger->error('Encountered an unhandled HTTP status code while saving an object', [
+						'uri' => (string)$uri,
+						'statusCode' => $response->getStatusCode(),
+						'reasonPhrase' => $response->getReasonPhrase(),
+						'responseHeaders' => $response->getHeaders(),
+						'responseBody' => $response->getBody()->getContents(),
+					]);
+
 				throw new ResponseException($response);
+			}
 
 			$entity->onChangesPersisted(json_decode($response->getBody()->getContents(), true));
 
@@ -168,8 +241,18 @@
 				return false;
 			else if ($response->getStatusCode() === 403)
 				return false;
-			else if ($response->getStatusCode() !== 200)
+			else if ($response->getStatusCode() !== 200) {
+				if ($this->logger)
+					$this->logger->error('Encountered an unhandled HTTP status code while deleting an object', [
+						'uri' => (string)$uri,
+						'statusCode' => $response->getStatusCode(),
+						'reasonPhrase' => $response->getReasonPhrase(),
+						'responseHeaders' => $response->getHeaders(),
+						'responseBody' => $response->getBody()->getContents(),
+					]);
+
 				throw new ResponseException($response);
+			}
 
 			return true;
 		}

@@ -100,6 +100,10 @@
 		public function setLogger(LoggerInterface $logger = null) {
 			$this->logger = $logger;
 
+			foreach ($this->endpointGroupInstances as $endpointGroup)
+				if ($endpointGroup instanceof LoggerAwareInterface)
+					$endpointGroup->setLogger($logger);
+
 			return $this;
 		}
 
@@ -152,7 +156,13 @@
 			if (!$class)
 				throw new \InvalidArgumentException($entityClass . ' is not a supported entity');
 
-			return $this->endpointGroupInstances[$entityClass] = new $class($this, $entityClass);
+			/** @var EndpointGroupInterface $group */
+			$group = new $class($this, $entityClass);
+
+			if ($group instanceof LoggerAwareInterface && $this->getLogger())
+				$group->setLogger($this->getLogger());
+
+			return $this->endpointGroupInstances[$entityClass] = $group;
 		}
 
 		/**

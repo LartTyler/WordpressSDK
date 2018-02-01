@@ -1,6 +1,8 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Entity\Features;
 
+	use DaybreakStudios\WordpressSDK\Entity\TagInterface;
+
 	interface TagCapableInterface {
 		/**
 		 * The terms assigned to the object in the post_tag taxonomy
@@ -13,7 +15,7 @@
 		public function getTags();
 
 		/**
-		 * @param int[] $tags
+		 * @param TagInterface[]|int[] $tags
 		 *
 		 * @return $this
 		 */

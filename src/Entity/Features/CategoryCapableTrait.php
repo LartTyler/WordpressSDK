@@ -1,6 +1,8 @@
 <?php
 	namespace DaybreakStudios\WordpressSDK\Entity\Features;
 
+	use DaybreakStudios\WordpressSDK\Entity\CategoryInterface;
+
 	/**
 	 * For use with {@see CategoryCapableInterface}.
 	 *
@@ -16,11 +18,29 @@
 		}
 
 		/**
-		 * @param int[] $categories
+		 * @param CategoryInterface[]|int[] $categories
 		 *
 		 * @return $this
 		 */
 		public function setCategories(array $categories) {
-			return $this->set(CategoryCapableInterface::FIELD_CATEGORIES, $categories);
+			return $this->set(CategoryCapableInterface::FIELD_CATEGORIES, $this->normalizeCategoriesArray($categories));
+		}
+
+		/**
+		 * @param CategoryInterface[]|int[] $categories
+		 *
+		 * @return int[]
+		 * @internal
+		 */
+		private function normalizeCategoriesArray(array $categories) {
+			if (!$categories)
+				return $categories;
+
+			return array_map(function($item) {
+				if ($item instanceof CategoryInterface)
+					return $item->getId();
+
+				return $item;
+			}, $categories);
 		}
 	}

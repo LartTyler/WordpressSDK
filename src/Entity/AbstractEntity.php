@@ -46,7 +46,9 @@
 				$this->set($field, $value);
 			}
 
-			$this->originalData = $this->fields;
+			// If ID is falsey, the entity is untracked (has not been saved, or was not loaded from the API), and
+			// should have ALL of it's data considered dirty until it's saved.
+			$this->originalData = $this->getId() ? $this->fields : [];
 		}
 
 		/**

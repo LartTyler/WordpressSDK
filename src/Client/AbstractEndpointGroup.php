@@ -206,8 +206,9 @@
 				]);
 
 			$response = $this->getWordpressClient()->post($uri, json_encode($changeSet));
+			$status = $response->getStatusCode();
 
-			if ($response->getStatusCode() !== 201) {
+			if ($status !== 200 && $status !== 201) {
 				if ($this->logger)
 					$this->logger->error('Encountered an unhandled HTTP status code while saving an object', [
 						'uri' => (string)$uri,
